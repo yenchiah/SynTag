@@ -1,0 +1,5 @@
+<manifest xmlns="http://ns.adobe.com/f4m/1.0">
+  <media streamId="livestream1" bitrate="100" /> 
+  <media streamId="livestream2" bitrate="200" /> 
+  <media streamId="livestream3" bitrate="350" /> 
+ </manifest>

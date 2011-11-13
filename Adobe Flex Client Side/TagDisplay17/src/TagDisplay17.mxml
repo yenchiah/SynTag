@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This is a free software project named "SynTag".
+Copyright (C) 2011 by Yen-Chia Hsu, IA LAB, National Cheng Kung University, Taiwan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				xmlns:amcharts="http://www.amcharts.com/com_internal"
+				minWidth="870" minHeight="870" backgroundColor="#787878"
+				layout="absolute" initialize="init()" creationComplete="creationcomplete()" 
+				width="870" height="870" verticalAlign="middle" horizontalAlign="center">	
+	
+	<fx:Script source="TagDisplay.as" />
+	<fx:Declarations>
+		<s:Fade id="fadeOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/> 
+		<s:Fade id="fadeIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/> 		
+	</fx:Declarations>
+	
+	<mx:Image x="10" y="25" width="850" height="120" source="logo.jpg"/>
+	<s:BorderContainer x="11" y="159" width="640" height="360" dropShadowVisible="false" borderVisible="true" backgroundColor="#787878" borderColor="#FFFFFF">
+		<s:VideoPlayer x="-1" y="-1" width="640" height="360" id="videoPlayer"/>
+	</s:BorderContainer>
+	<s:BorderContainer x="11" y="527.2" width="640" height="300" borderVisible="false">
+		<mx:TabNavigator id="tabNavigator" x="-1" y="-1" width="642" height="302" color="#323232" borderVisible="true" borderColor="#787878" change="AmchartTaggingTabChange(event)">
+			<s:NavigatorContent id="n1" label="Realtime Tagging" width="100%" height="100%" color="#323232">
+				<s:VGroup width="100%" height="100%">
+					<amcharts:AmSerialChart
+						width="640"
+						height="230"
+						id="chart"
+						marginTop="40"
+						marginLeft="40"
+						marginRight="20"
+						marginBottom="20"
+						dataProvider="{chartData}"
+						categoryField="videotime"
+						plotAreaFillAlphas="[0]"
+						clickGraphItem="{handleEventClick(event)}">
+						<amcharts:graphs>
+							<amcharts:AmGraph
+								id="good"
+								color="#FFFFFF" 
+								title="Good" 
+								valueField="good"
+								type="smoothedLine" 
+								lineThickness="2"
+								lineAlpha="1"
+								bullet="round"/>                        
+							<amcharts:AmGraph 
+								id="question"
+								color="#FFFFFF" 
+								title="Question" 
+								valueField="question"
+								type="smoothedLine" 
+								lineThickness="2"
+								lineAlpha="1"
+								bullet="round"/>
+							<amcharts:AmGraph 
+								id="disagree"
+								color="#FFFFFF" 
+								title="Disagree" 
+								valueField="disagree" 
+								type="smoothedLine" 
+								lineThickness="2"
+								lineAlpha="1"
+								bullet="round"/>
+							<amcharts:AmGraph 
+								id="hyperlink"
+								color="#FFFFFF" 
+								title="Hyperlink" 
+								valueField="hyperlink" 
+								descriptionField="hyperlinkStr"
+								type="smoothedLine" 
+								lineThickness="2"
+								lineAlpha="1"
+								bullet="round"/>
+						</amcharts:graphs>
+						
+						<amcharts:valueAxes>
+							<amcharts:ValueAxis  id="valueAxis" gridAlpha="0.1" color="#323232"/>                    
+						</amcharts:valueAxes>
+						
+						<amcharts:categoryAxis>
+							<amcharts:CategoryAxis gridAlpha="0.1" fontWeight="bold" startOnAxis="true" position="top" color="#323232" />
+						</amcharts:categoryAxis>				
+						
+						<amcharts:chartScrollbar>
+							<amcharts:ChartScrollbar height="15" graph="{good}" alpha="0.5"/>                    
+						</amcharts:chartScrollbar>
+						
+						<amcharts:chartCursor>
+							<amcharts:ChartCursor/>                    
+						</amcharts:chartCursor>	
+						
+					</amcharts:AmSerialChart>
+					<amcharts:AmLegend 
+						fontWeight="bold"
+						rollOverGraphAlpha="0.1" 
+						dataProvider="{chart}" 
+						width="640"
+						height="40"
+						marginLeft="0"
+						marginRight="0"
+						marginTop="0"
+						marginBottom="0"
+						markerType="square"
+						align="center"
+						horizontalGap="15"
+						verticalGap="0"/>		
+				</s:VGroup>
+			</s:NavigatorContent>
+			<s:NavigatorContent id="n2" label="Not Realtime Tagging" width="100%" height="100%" color="#323232">
+				<s:VGroup width="100%" height="100%">
+					<amcharts:AmSerialChart
+						width="640"
+						height="230"
+						id="chart_"
+						marginTop="40"
+						marginLeft="40"
+						marginRight="20"
+						marginBottom="20"
+						dataProvider="{chartData_}"
+						categoryField="videotime_"
+						plotAreaFillAlphas="[0]"
+						clickGraphItem="{handleEventClick_(event)}">
+						<amcharts:graphs>
+							<amcharts:AmGraph
+								id="good_"
+								color="#FFFFFF" 
+								title="Good" 
+								valueField="good_"
+								type="smoothedLine" 
+								lineThickness="2"
+								lineAlpha="1"
+								bullet="round"/>                        
+							<amcharts:AmGraph 
+								id="question_"
+								color="#FFFFFF" 
+								title="Question" 
+								valueField="question_" 
+								type="smoothedLine" 
+								lineThickness="2"
+								lineAlpha="1"
+								bullet="round"/>
+							<amcharts:AmGraph 
+								id="disagree_"
+								color="#FFFFFF" 
+								title="Disagree" 
+								valueField="disagree_"
+								type="smoothedLine" 
+								lineThickness="2"
+								lineAlpha="1"
+								bullet="round"/>
+							<amcharts:AmGraph 
+								id="hyperlink_"
+								color="#FFFFFF" 
+								title="Hyperlink" 
+								valueField="hyperlink_"
+								descriptionField="hyperlinkStr_"
+								type="smoothedLine" 
+								lineThickness="2"
+								lineAlpha="1"
+								bullet="round"/>
+						</amcharts:graphs>
+						
+						<amcharts:valueAxes>
+							<amcharts:ValueAxis  id="valueAxis_" gridAlpha="0.1" color="#323232"/>                    
+						</amcharts:valueAxes>
+						
+						<amcharts:categoryAxis>
+							<amcharts:CategoryAxis gridAlpha="0.1" fontWeight="bold" startOnAxis="true" position="top" color="#323232" />
+						</amcharts:categoryAxis>				
+						
+						<amcharts:chartScrollbar>
+							<amcharts:ChartScrollbar height="15" graph="{good_}" alpha="0.5"/>                    
+						</amcharts:chartScrollbar>
+						
+						<amcharts:chartCursor>
+							<amcharts:ChartCursor/>                    
+						</amcharts:chartCursor>	
+						
+					</amcharts:AmSerialChart>
+					<amcharts:AmLegend 
+						fontWeight="bold"
+						rollOverGraphAlpha="0.1" 
+						dataProvider="{chart_}" 
+						width="640"
+						height="40"
+						marginLeft="0"
+						marginRight="0"
+						marginTop="0"
+						marginBottom="0"
+						markerType="square"
+						align="center"
+						horizontalGap="15"
+						verticalGap="0"/>		
+				</s:VGroup>
+			</s:NavigatorContent>
+		</mx:TabNavigator>
+	</s:BorderContainer>
+	<s:Button x="659.3" y="615" label="Return To Timeline" width="200" height="45" color="#323232" id="btn_returntotimeline" click="btn_returntotimeline_clickHandler(event)"/>
+	<s:BorderContainer x="11" y="834.5" width="848" height="26" borderVisible="true" borderColor="#FFFFFF" backgroundColor="#787878">
+		<s:Label x="126" y="8" text="COPYRIGHT ©  Author: Yen-Chia Hsu, Interactive Architecture Lab, National Cheng Kung University, Taiwan" color="#FFFFFF" fontSize="12"/>
+	</s:BorderContainer>
+	<mx:LinkButton x="592" y="62" label="Broadcasting Service" color="#FFD2D2" focusColor="#FFFFFF" rollOverColor="#FFFFFF" selectionColor="#FFFFFF" textRollOverColor="#323232" textSelectedColor="#323232" click="navigateToURL(new URLRequest('http://ialab.tw/legenddolphin/BroadCastLive12/BroadCastLive12.html'), '_blank')" textDecoration="none" fontStyle="normal" fontWeight="normal" fontFamily="Arial"/>
+	<mx:LinkButton x="748" y="62" label="Archiving Service" color="#FFD2D2" focusColor="#FFFFFF" rollOverColor="#FFFFFF" selectionColor="#FFFFFF" textRollOverColor="#323232" textSelectedColor="#323232" click="navigateToURL(new URLRequest('http://ialab.tw/legenddolphin/TagDisplay16/TagDisplay16.html'), '_blank')" textDecoration="none" fontStyle="normal" fontWeight="normal" fontFamily="Arial"/>
+	<mx:LinkButton x="446" y="62" label="Recording Service" color="#FFD2D2" focusColor="#FFFFFF" rollOverColor="#FFFFFF" selectionColor="#FFFFFF" textRollOverColor="#323232" textSelectedColor="#323232" click="navigateToURL(new URLRequest('http://ialab.tw/legenddolphin/TestCamera18/TestCamera18.html'), '_blank')" textDecoration="none" fontStyle="normal" fontWeight="normal" fontFamily="Arial"/>
+	<s:TextArea x="659" y="383.25" width="200" height="225" borderVisible="true" id="txt" color="#FFFFFF" contentBackgroundColor="#787878" borderColor="#FFFFFF"/>
+	<s:TextArea x="659" y="158.85" width="200" height="215" borderVisible="true" borderColor="#FFFFFF" color="#FFFFFF" contentBackgroundColor="#787878" id="txt_about"/>
+	<s:BorderContainer x="659" y="667.6" width="200" height="160" backgroundColor="#787878" borderColor="#FFFFFF" borderVisible="true">
+		<s:Button x="7" y="7" label="Good" width="185" color="#323232" chromeColor="#FFFFFF" height="30" id="btn_good" click="btn_good_clickHandler(event)"/>
+		<s:Button x="102" y="41" label="Question" width="90" color="#323232" chromeColor="#FFFFFF" height="30" id="btn_question" click="btn_question_clickHandler(event)"/>
+		<s:Button x="7" y="41" label="Disagree" width="90" color="#323232" chromeColor="#FFFFFF" height="30" id="btn_disagree" click="btn_disagree_clickHandler(event)"/>
+		<s:TextInput x="8" y="93.6" width="183" height="22" color="#323232" id="txt_Comment" borderVisible="false"/>
+		<s:Label x="13" y="77.65" text="Type and press &quot;Comment&quot; :" color="#FFFFFF"/>
+		<s:Button x="7" y="121.6" label="Comment" width="185" color="#323232" chromeColor="#FFFFFF" height="30" id="btn_comment" click="btn_comment_clickHandler(event)"/>
+	</s:BorderContainer>
+	
+	<s:BorderContainer x="10" y="158" width="850" height="670" borderVisible="false" backgroundColor="#FFFFFF" id="amchartstockcontainer" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+		<s:HGroup x="10" y="10" width="830" height="650">
+			<amcharts:AmStockChart 
+				width="100%" 
+				height="100%" 	
+				mainDataSet="{iStudioDataSet}"
+				id="stockchart"
+				clickStockEvent="{handleStockEventClick(event)}">
+				<!--dataUpdated="{stockchart.zoomOut()}"-->
+				
+				<amcharts:dataSets>
+					<amcharts:DataSet id="iStudioDataSet" dataProvider="{iStudioChartData}" categoryField="date" title="iStudio" color="#828282" >                
+						<amcharts:fieldMappings>
+							<amcharts:FieldMapping fromField="a" toField="value"/>
+							<amcharts:FieldMapping fromField="b" toField="volume"/>
+						</amcharts:fieldMappings> 
+						<amcharts:stockEvents>
+							<amcharts:StockEvent/>
+						</amcharts:stockEvents>	
+					</amcharts:DataSet>    
+					
+					<amcharts:DataSet id="othersDataSet" dataProvider="{othersChartData}" categoryField="date" title="others" color="#FFD2D2">                
+						<amcharts:fieldMappings>
+							<amcharts:FieldMapping fromField="a" toField="value"/>
+							<amcharts:FieldMapping fromField="b" toField="volume"/>
+						</amcharts:fieldMappings> 
+						<amcharts:stockEvents>
+							<amcharts:StockEvent/>
+						</amcharts:stockEvents>	
+					</amcharts:DataSet> 
+				</amcharts:dataSets>
+				
+				<amcharts:panels>
+					<amcharts:StockPanel height="100%" showCategoryAxis="true">
+						<amcharts:stockGraphs>
+							<amcharts:StockGraph lineAlpha="0" id="g1" type="smoothedLine" valueField="value" compareField="value" comparable="true"/>                        
+						</amcharts:stockGraphs>
+					</amcharts:StockPanel>                           
+				</amcharts:panels>
+				
+				<amcharts:dataSetSelector>
+					<amcharts:DataSetSelector position="top"/>                
+				</amcharts:dataSetSelector>				
+				
+				<amcharts:periodSelector>
+					<amcharts:PeriodSelector position="bottom">
+						<amcharts:periods>
+							<amcharts:PeriodButton id="btn_periodHour" label="Hour" period="hh" count="8"/>
+							<amcharts:PeriodButton id="btn_periodDay" label="Day" period="DD" count="1"/>
+							<amcharts:PeriodButton id="btn_periodWeek" label="Week" period="DD" count="7"/>
+							<amcharts:PeriodButton id="btn_periodMonth" label="Month" period="MM" count="1"/>
+							<amcharts:PeriodButton id="btn_periodMAX" label="MAX" period="MAX"/>
+						</amcharts:periods>
+					</amcharts:PeriodSelector>
+				</amcharts:periodSelector>
+				
+				<amcharts:stockEventsSettings>
+					<amcharts:StockEventsSettings/>
+				</amcharts:stockEventsSettings>
+				
+				<amcharts:chartScrollbarSettings>
+					<amcharts:ChartScrollbarSettings height="30" graph="{g1}" backgroundColor="#787878" selectedBackgroundColor="#FFFFFF" selectedBackgroundAlpha="0.5"/>
+				</amcharts:chartScrollbarSettings>           
+				
+				<amcharts:panelsSettings>
+					<amcharts:PanelsSettings startDuration="1" sequencedAnimation="false"/>
+				</amcharts:panelsSettings> 
+				
+				<amcharts:valueAxesSettings>
+					<amcharts:ValueAxesSettings labelsEnabled="0" gridAlpha="0"/>
+				</amcharts:valueAxesSettings>
+				
+				<amcharts:categoryAxesSettings>
+					<amcharts:CategoryAxesSettings tickLength="20" axisAlpha="0.5" gridAlpha="0" color="#323232" minPeriod="mm" maxSeries="10" axisColor="#323232"/>
+				</amcharts:categoryAxesSettings>
+				
+				<amcharts:chartCursorSettings>
+					<amcharts:ChartCursorSettings enabled="false"/>
+				</amcharts:chartCursorSettings>
+				
+			</amcharts:AmStockChart>
+		</s:HGroup>
+	</s:BorderContainer>
+</mx:Application>
