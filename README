@@ -24,3 +24,7 @@ http://legenddolphin.wordpress.com/2011/11/09/syntag-a-web-based-platform-for-la
  THE SOFTWARE.
  ***************************************************************************************/
 
+Installation:
+1. copy the files inside "Adobe Flex Client Side" under the directory of your website.
+2. copy the files inside "Adobe Flash Media Server Side" into "applications" folder under the directory of your Flash Media Server.
+
